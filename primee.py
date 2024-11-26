@@ -34,27 +34,10 @@ def config_model(cliente, modelo, mensajeDeEntrada):
       stream=True
     )
     return response
-import streamlit as st  #type: ignore
-from groq import Groq  # type: ignore
-
-st.set_page_config(page_title='Mi primera app en streamlit' , page_icon='smile', initial_sidebar_state='collapsed')
-
-MODELOS = ['llama3-8b-8192', 'llama3-70b-8192', 'mixtral-8x7b-32768']
-Expandir
-main.py
-3 KB
-import streamlit as st  #type: ignore
-from groq import Groq  # type: ignore
-
-st.set_page_config(page_title='Mi primera app en streamlit' , page_icon='smile', initial_sidebar_state='collapsed')
-
-MODELOS = ['llama3-8b-8192', 'llama3-70b-8192', 'mixtral-8x7b-32768']
-Expandir
-message.txt
-3 KB
+    
 def cache():
-    if "mensajes" not in st.sessionstate:
-        st.sessionstate.mensajes = []
+    if "mensajes" not in st.session_state:
+        st.session_state.mensajes = []
 
 def actualizarhistorial(rol, contenido, avatar):
         st.sessionstate.mensajes.append({"role": rol, "content": contenido, "avatar":avatar})
@@ -77,7 +60,7 @@ def main():
     mensaje = st.chat_input("Escribí tu mensaje:")
 
     if mensaje:
-        actualizar_historial("user", mensaje, "🧑‍💻")
+        actualizarhistorial("user", mensaje, "🧑‍💻")
 
         chat_completo = config_model(clienteUsuario, modelo, mensaje)
 
@@ -86,9 +69,10 @@ def main():
             if frase.choices[0].delta.content:
                 respuesta_completa += frase.choices[0].delta.content
 
-        actualizar_historial("assistant", respuesta_completa, "🤖")
+        actualizarhistorial("assistant", respuesta_completa, "🤖")
+    
 
     area_chat()
 
-if name == "__main":
+if __name__ == "__main__":
     main()
